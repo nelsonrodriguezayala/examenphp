@@ -54,5 +54,29 @@ class VendedorDAO{
             $con=null;
             return $mensaje;
         }
+     public function registrar(VendedorDTO $vendedorDTO){
+            $con=Conexion::getConexion();
+            $mensaje="";
+            try{
+                $query=$con->prepare("INSERT INTO `vendedor`(`id`, `nombre`, `apellido`, `telefono`, `correo`) VALUES (?,?,?,?,?)");
+                $id=$vendedorDTO->getIdVendedor();
+              $nombre=$vendedorDTO->getNombre();
+              $apellido=$vendedorDTO->getApellido();
+              $telefono=$vendedorDTO->getTelefono();
+              $correo=$vendedorDTO->getCorreo();
+                $query->bindParam(1,$id);
+                $query->bindParam(2,$nombre);
+                $query->bindParam(3,$apellido);
+                $query->bindParam(4,$telefono);
+                $query->bindParam(5,$correo);
+                
+                $query->execute();
+                $mensaje="Registro Exitoso";
     
+            }catch(Exception $ex){
+                $mensaje=$ex->getMessage();
+            }
+            $con=null;
+            return $mensaje;
+        }
 }
